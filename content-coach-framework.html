@@ -119,6 +119,49 @@
       .practice a { color: var(--blue); }
       .now { color: var(--red); font-weight: 700; }
 
+      .desk-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--ink);
+        border: 1px solid var(--ink);
+      }
+      .desk-card {
+        background: var(--paper);
+        padding: 1.35rem;
+      }
+      .desk-card .mono { color: var(--red); font-size: .72rem; }
+      .desk-card b { display: block; font-family: "Noto Serif SC", serif; font-size: 1.18rem; margin: .3rem 0 .45rem; }
+      .desk-card p { margin: 0; color: var(--muted); font-size: .94rem; }
+      .commands {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin-top: 1.7rem;
+        background: var(--line);
+      }
+      .command {
+        background: var(--paper);
+        padding: 1rem;
+        min-height: 7rem;
+      }
+      .command code {
+        display: block;
+        font-family: "DM Mono", monospace;
+        color: var(--green);
+        margin-bottom: .65rem;
+      }
+      .command span { color: var(--muted); font-size: .9rem; }
+      .priority {
+        margin-top: 1.8rem;
+        padding: 1.25rem;
+        border: 1px solid var(--ink);
+        font-family: "Noto Serif SC", serif;
+        font-size: clamp(1.1rem, 2vw, 1.45rem);
+        line-height: 1.55;
+      }
+      .priority span { color: var(--red); }
+
       .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 2.1rem; }
       .timeline::before { content: ""; position: absolute; top: 1.3rem; left: 0; right: 0; height: 1px; background: var(--ink); }
       .phase { position: relative; padding: 2.25rem 1.2rem 0 0; }
@@ -154,6 +197,7 @@
         .module.active { display: block; }
         .module > div, .module > div + div { padding: 1.2rem 0; border-left: 0; border-bottom: 1px solid var(--line); }
         .rules { grid-template-columns: 1fr; }
+        .desk-grid, .commands { grid-template-columns: 1fr; }
         .timeline::before { left: .35rem; top: 0; bottom: 0; width: 1px; height: auto; }
         .phase { padding: 0 0 1.2rem 2rem; }
         .phase::before { top: .2rem; left: 0; }
@@ -166,127 +210,151 @@
     <main class="page">
       <header>
         <div>
-          <div class="eyebrow">Lonky / Content Operating System / v0.1</div>
-          <h1>内容不是<br /><em>一条条做</em>出来的。</h1>
-          <p class="lede">这是一个给“刚开始、但想做长”的创作者准备的陪跑教练框架：一个共享大脑，五个工作模块。它不替你生产观点；它让你的观察、作品和反馈逐渐变成判断。</p>
+          <div class="eyebrow">Lonky / We-Media Agent / v0.1</div>
+          <h1>先把内容<br /><em>做成流程</em>。</h1>
+          <p class="lede">这是一份自媒体 Agent 操作手册：它帮你收集素材、研究选题、拆竞品、打磨脚本，并在发布后把反馈写回判断。当前阶段不追求全自动，先保证每一步都能被你掌控。</p>
         </div>
-        <aside class="hero-note"><strong>先搭框架，不急着自动化。</strong>先把每个模块的输入、输出、边界和人工决策点定义清楚。连续发布后，再决定哪里值得做成 Agent。</aside>
+        <aside class="hero-note"><strong>现在的重点是轻量协作。</strong>你人工看平台、投喂链接和观察；Agent 负责来源索引、角度归纳、脚本结构和风险检查。自动化只处理已经稳定重复的动作。</aside>
       </header>
 
-      <div class="north-star"><span class="number">NORTH STAR</span><p>用真实的 AI 实验，讨论人在 AI 时代如何扩大行动半径、保留判断，并持续迭代自己。</p></div>
+      <div class="north-star"><span class="number">NORTH STAR</span><p>用真实 AI 项目和长期协作实验，吸引 AI 创业者、产品实践者和同行交流，而不是做泛 AI 工具流量号。</p></div>
 
       <section>
-        <div class="section-head"><h2>所有模块共享的<br />不是提示词，是判断。</h2><p>每个角色看到同一份“账号宪法”。这防止资讯、脚本和数据模块各自把账号推向不同方向。</p></div>
+        <div class="section-head"><h2>共享的不是提示词，<br />是证据和判断。</h2><p>每个模块都要回到来源、公开边界和账号定位。没有来源的内容只能是问题或假设，不能支撑结论。</p></div>
         <div class="brain">
           <h3>共享大脑 · Account Brain</h3>
           <div class="brain-grid">
-            <div><b>账号宪法</b><span>我是谁、为谁写、明确不做什么、什么才算成功。</span></div>
-            <div><b>素材档案</b><span>真实项目、观察、失败、可公开边界；素材是证据，不是履历展。</span></div>
-            <div><b>内容档案</b><span>每条内容的假设、脚本、成片、数据、评论与复盘。</span></div>
-            <div><b>学习记录</b><span>什么吸引对的人，什么只带来噪音，下一条该保留或改变什么。</span></div>
+            <div><b>账号契约</b><span>目标人群、长期目的、公开边界、明确不做什么。</span></div>
+            <div><b>素材池</b><span>Obsidian、项目变化、外部链接、人工平台样本和竞品视频。</span></div>
+            <div><b>角度与风格库</b><span>哪些表达适合你，哪些虽然有效但不该学。</span></div>
+            <div><b>内容链路</b><span>选题、脚本、发布、反馈和下一次假设使用同一个 ID。</span></div>
           </div>
         </div>
         <div class="loop">
-          <div><span>01 / FIND</span><b>发现信号</b></div>
-          <div><span>02 / DECIDE</span><b>讨论选题</b></div>
-          <div><span>03 / MAKE</span><b>讲成视频</b></div>
-          <div><span>04 / READ</span><b>读取反馈</b></div>
-          <div><span>05 / LEARN</span><b>更新判断</b></div>
+          <div><span>01 / CAPTURE</span><b>收集素材</b></div>
+          <div><span>02 / RESEARCH</span><b>研究选题</b></div>
+          <div><span>03 / SCRIPT</span><b>讲成视频</b></div>
+          <div><span>04 / FEEDBACK</span><b>发布后再启用</b></div>
+          <div><span>05 / OPERATE</span><b>日常工作台</b></div>
         </div>
       </section>
 
       <section>
-        <div class="section-head"><h2>五个模块。<br />一次只启用一个。</h2><p>点击模块查看：它负责什么、参考什么做法、输出什么，以及你现在是否需要做它。</p></div>
+        <div class="section-head"><h2>五个模块。<br />一次只推进一个动作。</h2><p>点击模块查看：它负责什么、输入什么、输出什么，以及当前阶段如何使用。</p></div>
         <div class="module-nav" role="tablist" aria-label="内容陪跑教练模块">
-          <button role="tab" aria-selected="true" aria-controls="m1" data-target="m1">01 资讯雷达</button>
-          <button role="tab" aria-selected="false" aria-controls="m2" data-target="m2">02 选题陪练</button>
-          <button role="tab" aria-selected="false" aria-controls="m3" data-target="m3">03 脚本陪练</button>
-          <button role="tab" aria-selected="false" aria-controls="m4" data-target="m4">04 制作陪练</button>
-          <button role="tab" aria-selected="false" aria-controls="m5" data-target="m5">05 数据复盘</button>
+          <button role="tab" aria-selected="true" aria-controls="m1" data-target="m1">01 素材雷达</button>
+          <button role="tab" aria-selected="false" aria-controls="m2" data-target="m2">02 选题研究</button>
+          <button role="tab" aria-selected="false" aria-controls="m3" data-target="m3">03 脚本协作</button>
+          <button role="tab" aria-selected="false" aria-controls="m4" data-target="m4">04 反馈复盘</button>
+          <button role="tab" aria-selected="false" aria-controls="m5" data-target="m5">05 日常工作台</button>
         </div>
 
         <article class="module active" id="m1" role="tabpanel">
-          <div><div class="module-label">MODULE 01</div><h3>资讯雷达</h3><p>不是“抓热榜”，而是从外部变化和你的内部实验里，找值得停下来思考的信号。</p><p class="now">现在先做：是</p></div>
-          <div><b>输入</b><ul><li>AI 产品、模型、创作者观点的原链接</li><li>你在 Discord、Obsidian、项目里遇到的变化</li><li>评论、私信和同行聊天里的重复问题</li></ul><div class="output"><b>最小输出：信号卡</b>
-发生了什么 / 原链接
-它触到什么问题
-它与我有哪些真实素材相连
-可讨论的选题（最多 2 个）
-风险：噪音、饱和、公开边界</div></div>
-          <div><div class="practice"><b>参考做法</b><p>热点只是时机，不能取代受众匹配。先积累多次快照，再看变化而非单次热度。</p><p><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noreferrer">Anthropic：上下文需要持续筛选，而非无限堆积 ↗</a></p></div><div class="practice"><b>先不做</b><p>24 小时全网爬虫、自动跟热点、自动写内容。起步阶段每周两次人工校验更重要。</p></div></div>
+          <div><div class="module-label">MODULE 01</div><h3>素材雷达</h3><p>把内部项目、Obsidian 反思、外部链接和临时想法收进同一个可追溯素材池。</p><p class="now">状态：已搭 v0.1</p></div>
+          <div><b>输入</b><ul><li>本地 Vault 白名单：Knowledge、Daily Notes、aboutme、conversations、Projects</li><li>手动投喂的新闻、文章、产品发布、截图和口述</li><li>项目变化卡：问题、旧方案、改动、洞见、公开风险</li></ul><div class="output"><b>最小输出：素材卡 / 信号卡</b>
+原始来源与 source_id
+这是什么：素材、外部信号、噪音或待核验
+可验证事实、个人判断、未知项
+公开边界
+下一步：归档 / 补充 / 进入选题</div></div>
+          <div><div class="practice"><b>当前规则</b><p>Discord 不直接抓，读整理进 Vault 的 conversations 和 aboutme。GitHub 上的 My-vault 只做备份历史，不作为第二采集源。</p></div><div class="practice"><b>不做</b><p>不扫描整个 Vault，不把项目日志自动变成视频，不把私有材料默认视为可公开。</p></div></div>
         </article>
 
         <article class="module" id="m2" role="tabpanel">
-          <div><div class="module-label">MODULE 02</div><h3>选题陪练</h3><p>不替你决定“发什么”，而是像一个有记忆的主编，逼你说清楚为什么这个题非你不可。</p><p class="now">现在先做：是</p></div>
-          <div><b>输入</b><ul><li>一张信号卡，或一个你自己反复在想的困惑</li><li>账号宪法、素材档案、已发布内容及反馈</li></ul><div class="output"><b>最小输出：选题卡</b>
-谁会停下来 / 他的具体困境
-主流观点 / 我的不同判断
-真实证据与公开边界
-标题、开头、内容动作
-发布后只观察一个信号</div></div>
-          <div><div class="practice"><b>参考做法</b><p>系列要有一致的格式和可识别的承诺，但每期仍需有不同的具体事件或矛盾。</p><p><a href="https://blog.youtube/creator-and-artist-stories/four-tips-for-branding-your-series-on/" target="_blank" rel="noreferrer">YouTube：稳定格式让单条内容成为可辨识的系列 ↗</a></p></div><div class="practice"><b>你的规则</b><p>LonkyClaw 不是选题本身，是证据库。标题先讲人的困境和具体场景，再展示产品动作。</p></div></div>
+          <div><div class="module-label">MODULE 02</div><h3>选题研究</h3><p>先强信息，后弱建议。选题不是标题生成，而是判断一个话题有没有讨论场、已有角度和你的切入点。</p><p class="now">状态：已搭 v0.1</p></div>
+          <div><b>输入</b><ul><li>选题研究包：热度、现有角度、与你的连接、弱建议</li><li>人工平台样本：抖音、小红书、视频号，每个平台每个关键词 10–20 条</li><li>竞品账号卡和竞品视频样本卡</li></ul><div class="output"><b>最小输出：研究包</b>
+来源索引，每个判断都带 source_id
+整体热度：上升 / 持续 / 一次性 / 未知
+现有角度地图：拥挤处与空位
+适合你的 2–4 个弱建议
+下一轮深入讨论问题</div></div>
+          <div><div class="practice"><b>关键词池</b><p>每次只选 3–5 个词：核心主题词、目标人群词、项目证据词、协作关系词、反向筛选词。</p></div><div class="practice"><b>竞品规则</b><p>竞品分析必须同时输出可借鉴和不要学。学习结构，不复制人设、焦虑叙事或标题套路。</p></div></div>
         </article>
 
         <article class="module" id="m3" role="tabpanel">
-          <div><div class="module-label">MODULE 03</div><h3>脚本陪练</h3><p>先帮你把一个判断说透，再把它变成可拍的叙事。它不是“批量生成 60 秒口播”。</p><p class="now">现在先做：下一步</p></div>
-          <div><b>输入</b><ul><li>已经通过讨论的选题卡</li><li>一个真实场景、截图、记录或可演示的产品动作</li></ul><div class="output"><b>最小输出：叙事骨架</b>
-前 3 秒：一个反常识或具体困境
-中段：我原来怎么想，哪里被现实打断
-证据：只展示一个真实动作
-转折：我因此改了什么
-结尾：让观众回答的一个问题</div></div>
-          <div><div class="practice"><b>参考做法</b><p>标题和开头承诺的内容必须尽快兑现；如果视频后段才出现最有价值部分，应考虑前移。</p><p><a href="https://support.google.com/youtube/answer/9314415?hl=en" target="_blank" rel="noreferrer">YouTube：用留存高点和流失点反推开头与结构 ↗</a></p></div><div class="practice"><b>你的规则</b><p>拦截产品腔：不从“我实现了什么模块”开始，而从“我为何需要它”开始。</p></div></div>
+          <div><div class="module-label">MODULE 03</div><h3>脚本协作</h3><p>不直接写完整逐字稿。先把选题压成一个表达承诺，再做 Brief、口播大纲和拍摄清单。</p><p class="now">状态：已搭 v0.1</p></div>
+          <div><b>输入</b><ul><li>已确认的选题卡</li><li>可公开或可脱敏的一手证据</li><li>竞品结构参考和你的表达顾虑</li></ul><div class="output"><b>最小输出：脚本工作台</b>
+最多 3 个关键追问
+脚本 Brief：给谁看、讲什么、证据是什么
+3 个开头假设
+口播大纲：冲突、判断、证据、方法、反馈
+拍摄/录屏清单与删减清单</div></div>
+          <div><div class="practice"><b>三种模式</b><p>观点型、案例型、教程型。LonkyClaw 优先案例型，但必须翻译成观众问题，不能停在功能更新。</p></div><div class="practice"><b>口吻规则</b><p>保留第一人称、真实不确定性和产品判断过程。少用“正确答案是”，多用“我目前的判断是”。</p></div></div>
         </article>
 
         <article class="module" id="m4" role="tabpanel">
-          <div><div class="module-label">MODULE 04</div><h3>制作陪练</h3><p>把脚本拆成真人、屏幕、证据和剪辑节奏。目标不是自动生成视频，而是不再每条都从零开始。</p><p class="now">现在先做：暂缓</p></div>
-          <div><b>输入</b><ul><li>叙事骨架和完整口播</li><li>能公开的截图、录屏、真实操作或现场材料</li></ul><div class="output"><b>最小输出：拍摄包</b>
-必须真人讲的 3 段
-只展示一个产品动作的录屏
-每段画面与文字提示
-封面 3 个候选
-剪辑时必须删掉的“自我感动段”</div></div>
-          <div><div class="practice"><b>参考做法</b><p>平台鼓励用原生、纵向、叙事驱动的表达；但不要把平台技巧误当成内容本身。</p><p><a href="https://newsroom.tiktok.com/5-tips-for-tiktok-creators?lang=en" target="_blank" rel="noreferrer">TikTok：创作者视频的基础格式与故事表达 ↗</a></p></div><div class="practice"><b>先不做</b><p>AI 自动剪辑工作流、复杂模板库、批量素材生成。先拍出 3 条，再标准化重复动作。</p></div></div>
+          <div><div class="module-label">MODULE 04</div><h3>反馈复盘</h3><p>暂缓。没有作品之前，不提前设计复杂指标。发布第一条并拿到 48 小时反馈后再展开。</p><p class="now">状态：发布后启动</p></div>
+          <div><b>启动条件</b><ul><li>至少发布 1 条内容</li><li>拿到 48 小时后的平台数据</li><li>有评论、私信、同行反馈或你的表达感受</li></ul><div class="output"><b>占位输出</b>
+三个平台发布链接
+基础数据：播放、互动、关注、私信
+高质量反馈原话
+你的表达感受
+下一条只验证什么</div></div>
+          <div><div class="practice"><b>现在不做</b><p>不预设指标权重，不把播放量等同于定位成功，不在没有样本时设计复杂复盘表。</p></div><div class="practice"><b>未来作用</b><p>让真实反馈回流到选题库、竞品库和风格库，而不是只看单条数据高低。</p></div></div>
         </article>
 
         <article class="module" id="m5" role="tabpanel">
-          <div><div class="module-label">MODULE 05</div><h3>数据复盘</h3><p>不把一条高播放误判成定位成功。它要区分：陌生人是否停下、是否看完、是否保存，以及对的人有没有出现。</p><p class="now">现在先做：发布后启动</p></div>
-          <div><b>输入</b><ul><li>平台数据：播放、完播、互动、收藏、涨粉</li><li>评论原文、私信、合作/讨论线索</li><li>你的主观复盘：哪里讲顺了、哪里不想再讲</li></ul><div class="output"><b>最小输出：一页复盘</b>
-留住人的是哪一段
-观众误解/追问了什么
-吸引到谁，而不只是吸引了多少人
-保留 / 删除 / 下次验证
-一条可写回选题 Agent 的学习</div></div>
-          <div><div class="practice"><b>参考做法</b><p>视频留存应在单条内容层面看：高点可能是值得前移或扩写的内容，流失点说明承诺或结构存在问题。</p><p><a href="https://support.google.com/youtube/answer/9314415?hl=en" target="_blank" rel="noreferrer">YouTube：关键留存时刻的解释与用法 ↗</a></p></div><div class="practice"><b>你的北极星</b><p>播放是入口；高质量私信、同行讨论、持续回访，才更接近“建立自己的资源”。</p></div></div>
+          <div><div class="module-label">MODULE 05</div><h3>日常工作台</h3><p>把前面模块串成你真的会用的入口：手动触发 + 每周固定回顾，不设置每日强制任务。</p><p class="now">状态：已搭 v0.1</p></div>
+          <div><b>输入</b><ul><li>你随时丢进来的想法、链接、竞品、项目变化或口述</li><li>每周一上午的自动回顾</li><li>当前正在推进的唯一动作</li></ul><div class="output"><b>最小输出：工作台卡</b>
+本周输入队列
+本周项目变化卡
+本周选题研究包
+竞品与风格更新
+本周唯一推进
+暂缓原因</div></div>
+          <div><div class="practice"><b>路由优先级</b><p>安全边界 > 来源追溯 > 选题清晰度 > 证据动作 > 表达风格 > 自动化效率。</p></div><div class="practice"><b>自动化顺序</b><p>先文件归档和 ID，再周度扫描、竞品格式化、发布数据录入；平台样本采集排最后。</p></div></div>
         </article>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>你只需要这样叫它。</h2><p>模块编号是系统内部结构。日常使用时，你直接输入一句话，Agent 先判断路由。</p></div>
+        <div class="commands">
+          <div class="command"><code>我刚想到一个点</code><span>进入捕捉模式：判断是素材、信号、噪音还是待核验。</span></div>
+          <div class="command"><code>这个视频/账号看下</code><span>进入竞品模式：生成竞品样本卡，拆可借鉴和不要学。</span></div>
+          <div class="command"><code>这个题值得讲吗</code><span>进入选题研究：做来源索引、热度、角度地图和弱建议。</span></div>
+          <div class="command"><code>基于这个选题进入脚本</code><span>进入脚本工作台：先问最多 3 个关键问题，再给 Brief。</span></div>
+          <div class="command"><code>我拍完/发完了</code><span>进入发布记录：保存版本、链接和 48 小时观察问题。</span></div>
+          <div class="command"><code>一起复盘这条</code><span>模块 4 启动后使用：区分数据事实、评论含义和你的感受。</span></div>
+        </div>
+        <div class="priority"><span>默认优先级：</span>安全边界 > 来源追溯 > 选题清晰度 > 证据动作 > 表达风格 > 自动化效率。</div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>每周一次整理，<br />不是每周强制发布。</h2><p>每周一上午的 heartbeat 已启用。它只负责把材料整理成可讨论的研究包，脚本仍需你确认选题后手动触发。</p></div>
+        <div class="desk-grid">
+          <div class="desk-card"><span class="mono">WEEKLY / 01</span><b>项目变化卡</b><p>从 Projects 中找问题、旧方案、设计变化和可抽象洞见，不罗列提交。</p></div>
+          <div class="desk-card"><span class="mono">WEEKLY / 02</span><b>选题研究包</b><p>最多 5 个，强信息、弱建议。每个判断都有 source_id。</p></div>
+          <div class="desk-card"><span class="mono">WEEKLY / 03</span><b>平台与竞品状态</b><p>记录抖音、小红书、视频号样本是否充分；竞品只学习结构。</p></div>
+          <div class="desk-card"><span class="mono">WEEKLY / 04</span><b>唯一推进动作</b><p>捕捉素材、深聊选题、进入脚本、拍摄发布或暂缓，只选一个。</p></div>
+        </div>
       </section>
 
       <section>
         <div class="section-head"><h2>不是五个 Agent 同时开工。<br />是一个逐步变强的循环。</h2><p>先用人工工作流验证，再把稳定、重复、低风险的部分自动化。</p></div>
         <div class="timeline">
-          <div class="phase current"><span class="mono">NOW / 0–2 周</span><h3>定方向</h3><p>写账号宪法；整理 LonkyClaw 素材与公开边界；每周做 3 张选题卡。</p></div>
-          <div class="phase"><span class="mono">NEXT / 3–6 周</span><h3>发布学习</h3><p>连续发布 3 条；每条只验证一个假设；先建立脚本与拍摄模板。</p></div>
-          <div class="phase"><span class="mono">LATER / 7–10 周</span><h3>找到重复</h3><p>从内容数据和同行互动里，确定哪些结构、话题和演示方式值得保留。</p></div>
-          <div class="phase"><span class="mono">THEN / 10+ 周</span><h3>再自动化</h3><p>只把反复出现、你已经信任的动作做成独立 Agent 或自动流程。</p></div>
+          <div class="phase current"><span class="mono">NOW / FRAMEWORK</span><h3>搭完骨架</h3><p>模块 1–3 与 5 已有 v0.1；模块 4 等第一条内容发布后展开。</p></div>
+          <div class="phase"><span class="mono">NEXT / FIRST VIDEO</span><h3>选一条试跑</h3><p>从 LonkyClaw 或竞品样本里选一个研究包，进入脚本 Brief。</p></div>
+          <div class="phase"><span class="mono">LATER / 3 POSTS</span><h3>找到重复</h3><p>连续几条后，判断哪些选题、证据动作和表达方式值得保留。</p></div>
+          <div class="phase"><span class="mono">THEN / AUTOMATE</span><h3>再自动化</h3><p>只自动化连续 3 次都稳定、你明显觉得烦、且有人工兜底的动作。</p></div>
         </div>
       </section>
 
       <section>
-        <div class="section-head"><h2>三条不变的约束。</h2><p>它们比“用哪个模型”更重要。</p></div>
+        <div class="section-head"><h2>三个月后，<br />看资产，不只看粉丝。</h2><p>这个系统要帮你判断自己能不能持续表达、能不能吸引对的人，以及是否正在形成自己的角度和风格。</p></div>
         <div class="rules">
-          <div><b>人拥有最终编辑权</b><p>Agent 可以收集、挑战、提案和复盘；但不能自动改变账号定位、公开素材或发布内容。</p></div>
-          <div><b>先证据，后观点</b><p>项目、数据和个人经历是证据；没有外部验证的自用工具，不能被写成已证明的产品需求。</p></div>
-          <div><b>一条内容是一次假设</b><p>不因为一条爆款就改定位，也不因为一条低播放就否定一个长期命题。</p></div>
-          <div><b>自动化只处理已验证的重复</b><p>当你还不知道什么有用时，自动化只会加速噪音；先手动走几轮，才知道该自动化哪里。</p></div>
+          <div><b>持续表达</b><p>你是否能持续讲出自己愿意公开承担的判断，而不是每条都靠热点。</p></div>
+          <div><b>对的人出现</b><p>是否有人把问题说成“这也是我的问题”，尤其是 AI 同行、创业者和潜在合作者。</p></div>
+          <div><b>真实素材变多</b><p>内容线索是否越来越多来自你的项目、反思和实践，而不是外部热点。</p></div>
+          <div><b>风格更清楚</b><p>你是否知道哪些角度、语气、证据动作适合你，哪些虽然有效但不该学。</p></div>
         </div>
       </section>
 
       <section class="start">
-        <div><div class="eyebrow">First Move</div><h2>现在只要做三件事。</h2><ol><li>把账号宪法写成一页：目标人群、承诺、素材、边界、成功定义。</li><li>为 LonkyClaw 建一张新素材卡：从“工程项目”改写为“长期人机协作实验”。</li><li>针对第一个视频，完成一张选题卡；暂不写完整脚本。</li></ol></div>
-        <aside class="callout"><b>系统开始的标志</b><span>不是 Agent 跑起来，而是你第一次明确写下：我为什么做这个题、我想吸引谁、发完后准备从什么反馈里学习。</span></aside>
+        <div><div class="eyebrow">Next Move</div><h2>框架完成后，第一步不是写稿。</h2><ol><li>选一个主题做真实研究包：来源、热度、现有角度、与你的连接。</li><li>补 3–5 个关键词下的人工平台样本或竞品视频样本。</li><li>确认一个选题后，再进入脚本 Brief，不直接写逐字稿。</li></ol></div>
+        <aside class="callout"><b>系统开始的标志</b><span>不是 HTML 更好看，而是你能随手投喂一个想法、链接或竞品，Agent 知道该进入哪个协作模式。</span></aside>
       </section>
     </main>
-    <footer class="page"><span>CONTENT COACH / FRAMEWORK v0.1</span><span>原则与来源已在各模块内链接 · 2026.08</span></footer>
+    <footer class="page"><span>WE-MEDIA AGENT / OPERATING MANUAL v0.1</span><span>模块 4 暂缓 · 模块 5 已启用 · 2026.08</span></footer>
     <script>
       const tabs = document.querySelectorAll('[role="tab"]');
       const panels = document.querySelectorAll('[role="tabpanel"]');
