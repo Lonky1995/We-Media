@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>内容陪跑教练 · Lonky</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;600;700;900&family=Source+Han+Sans+SC:wght@400;500;600;700&display=swap');
+
+      :root {
+        --ink: oklch(20% 0.025 254);
+        --muted: oklch(47% 0.025 254);
+        --paper: oklch(96% 0.012 82);
+        --paper-deep: oklch(91% 0.024 82);
+        --line: oklch(79% 0.03 74);
+        --green: oklch(46% 0.105 165);
+        --red: oklch(52% 0.13 28);
+        --yellow: oklch(72% 0.13 83);
+        --blue: oklch(48% 0.1 248);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 83% 6%, oklch(88% 0.06 92 / .62), transparent 23rem),
+          repeating-linear-gradient(0deg, transparent, transparent 25px, oklch(41% 0.01 80 / .045) 26px),
+          var(--paper);
+        font-family: "Source Han Sans SC", "PingFang SC", sans-serif;
+        line-height: 1.6;
+      }
+      a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+      button { font: inherit; }
+
+      .page { width: min(1220px, calc(100% - 40px)); margin: 0 auto; }
+      .eyebrow, .mono { font-family: "DM Mono", monospace; letter-spacing: .045em; }
+      .eyebrow { color: var(--green); font-size: .78rem; text-transform: uppercase; }
+
+      header {
+        display: grid;
+        grid-template-columns: 1.12fr .88fr;
+        gap: clamp(2rem, 7vw, 7rem);
+        padding: clamp(3rem, 7vw, 6.5rem) 0 3rem;
+        border-bottom: 1px solid var(--ink);
+      }
+      h1, h2, h3, p { margin-top: 0; }
+      h1, h2, h3 { font-family: "Noto Serif SC", serif; line-height: 1.15; }
+      h1 { font-size: clamp(3.05rem, 7.2vw, 6.7rem); margin: .4rem 0 1.4rem; letter-spacing: -.075em; }
+      h1 em { color: var(--green); font-style: normal; }
+      .lede { max-width: 43rem; color: var(--muted); font-size: clamp(1.06rem, 1.5vw, 1.34rem); }
+      .hero-note {
+        align-self: end;
+        padding: 1.3rem 0 1.3rem 1.5rem;
+        border-left: 4px solid var(--yellow);
+        color: var(--muted);
+      }
+      .hero-note strong { display: block; color: var(--ink); font-size: 1.15rem; margin-bottom: .4rem; }
+
+      .north-star {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1.1rem;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .north-star .number { font: 500 1rem "DM Mono", monospace; color: var(--red); padding-top: .2rem; }
+      .north-star p { margin: 0; font-family: "Noto Serif SC", serif; font-size: clamp(1.25rem, 2.2vw, 2rem); line-height: 1.4; }
+
+      section { padding: clamp(3rem, 7vw, 6.5rem) 0; border-bottom: 1px solid var(--line); }
+      .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+      h2 { font-size: clamp(2rem, 4vw, 3.55rem); margin: 0; letter-spacing: -.055em; }
+      .section-head > p { margin: 0; max-width: 32rem; color: var(--muted); }
+
+      .brain {
+        position: relative;
+        padding: clamp(1.6rem, 4vw, 3.3rem);
+        overflow: hidden;
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .brain::after { content: "共同\A 大脑"; white-space: pre; position: absolute; right: 2.5rem; top: -1.2rem; font: 900 clamp(4rem, 12vw, 10rem)/.85 "Noto Serif SC", serif; color: oklch(100% 0 0 / .055); }
+      .brain h3 { position: relative; margin-bottom: 1.5rem; font-size: clamp(1.8rem, 3vw, 3rem); }
+      .brain-grid { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+      .brain-grid div { border-top: 1px solid oklch(94% 0.01 80 / .35); padding-top: .75rem; }
+      .brain-grid b { display: block; color: var(--yellow); margin-bottom: .4rem; }
+      .brain-grid span { font-size: .92rem; color: oklch(91% 0.01 80 / .74); }
+
+      .loop {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        border: 1px solid var(--ink);
+        margin-top: 1.8rem;
+      }
+      .loop div { min-height: 8rem; padding: 1rem; border-right: 1px solid var(--ink); }
+      .loop div:last-child { border: 0; background: oklch(89% 0.062 163); }
+      .loop span { display: block; font: .76rem "DM Mono", monospace; color: var(--muted); }
+      .loop b { display: block; margin-top: .75rem; font-family: "Noto Serif SC", serif; font-size: 1.28rem; line-height: 1.25; }
+
+      .module-nav { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.5rem; }
+      .module-nav button {
+        cursor: pointer; border: 1px solid var(--line); color: var(--muted); background: transparent;
+        padding: .5rem .8rem; transition: .18s ease;
+      }
+      .module-nav button:hover, .module-nav button[aria-selected="true"] { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+      .module { display: none; grid-template-columns: .9fr 1.45fr .8fr; border-top: 2px solid var(--ink); }
+      .module.active { display: grid; animation: lift .35s ease both; }
+      .module > div { padding: 1.55rem 1.4rem 1.8rem 0; }
+      .module > div + div { padding-left: 1.4rem; border-left: 1px solid var(--line); }
+      .module-label { color: var(--red); font: .78rem "DM Mono", monospace; }
+      .module h3 { font-size: clamp(1.75rem, 3.2vw, 2.75rem); margin: .4rem 0 1rem; letter-spacing: -.05em; }
+      .module p { color: var(--muted); }
+      .module ul { margin: 0; padding-left: 1.1rem; }
+      .module li { margin: .55rem 0; }
+      .output { background: var(--paper-deep); padding: 1rem; border-left: 3px solid var(--green); font-size: .92rem; white-space: pre-line; }
+      .practice { border-top: 1px solid var(--line); padding-top: 1.1rem; margin-top: 1.2rem; }
+      .practice b { font-family: "Noto Serif SC", serif; }
+      .practice a { color: var(--blue); }
+      .now { color: var(--red); font-weight: 700; }
+
+      .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 2.1rem; }
+      .timeline::before { content: ""; position: absolute; top: 1.3rem; left: 0; right: 0; height: 1px; background: var(--ink); }
+      .phase { position: relative; padding: 2.25rem 1.2rem 0 0; }
+      .phase::before { content: ""; position: absolute; width: .8rem; height: .8rem; top: .9rem; left: 0; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+      .phase.current::before { background: var(--green); border-color: var(--green); box-shadow: 0 0 0 4px oklch(46% 0.105 165 / .15); }
+      .phase .mono { font-size: .74rem; color: var(--red); }
+      .phase h3 { margin: .35rem 0 .6rem; font-size: 1.45rem; }
+      .phase p { color: var(--muted); font-size: .92rem; }
+
+      .rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--ink); border: 1px solid var(--ink); }
+      .rules div { padding: 1.45rem; background: var(--paper); }
+      .rules b { display: block; font-family: "Noto Serif SC", serif; font-size: 1.2rem; margin-bottom: .35rem; }
+      .rules p { color: var(--muted); margin: 0; }
+
+      .start { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 8vw, 8rem); align-items: end; }
+      .start h2 { margin-bottom: 1.2rem; }
+      .start ol { margin: 0; padding: 0; list-style: none; counter-reset: start; }
+      .start li { counter-increment: start; padding: 1rem 0; border-top: 1px solid var(--line); font-size: 1.03rem; }
+      .start li::before { content: "0" counter(start); display: inline-block; width: 3rem; color: var(--green); font: .78rem "DM Mono", monospace; }
+      .callout { padding: 1.4rem; background: var(--yellow); color: oklch(25% 0.045 68); }
+      .callout b { display: block; font-family: "Noto Serif SC", serif; font-size: 1.35rem; margin-bottom: .5rem; }
+
+      footer { padding: 2rem 0 3rem; display: flex; justify-content: space-between; gap: 2rem; color: var(--muted); font-size: .82rem; }
+      @keyframes lift { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      @media (max-width: 820px) {
+        .page { width: min(100% - 28px, 1220px); }
+        header, .start { grid-template-columns: 1fr; }
+        .brain-grid, .loop, .timeline { grid-template-columns: 1fr 1fr; }
+        .loop div:nth-child(2) { border-right: 0; }
+        .loop div { border-bottom: 1px solid var(--ink); }
+        .loop div:last-child { border-bottom: 0; }
+        .module.active { display: block; }
+        .module > div, .module > div + div { padding: 1.2rem 0; border-left: 0; border-bottom: 1px solid var(--line); }
+        .rules { grid-template-columns: 1fr; }
+        .timeline::before { left: .35rem; top: 0; bottom: 0; width: 1px; height: auto; }
+        .phase { padding: 0 0 1.2rem 2rem; }
+        .phase::before { top: .2rem; left: 0; }
+      }
+      @media (max-width: 480px) { .brain-grid, .loop { grid-template-columns: 1fr; } .loop div, .loop div:nth-child(2) { border-right: 0; } footer { display: block; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div>
+          <div class="eyebrow">Lonky / Content Operating System / v0.1</div>
+          <h1>内容不是<br /><em>一条条做</em>出来的。</h1>
+          <p class="lede">这是一个给“刚开始、但想做长”的创作者准备的陪跑教练框架：一个共享大脑，五个工作模块。它不替你生产观点；它让你的观察、作品和反馈逐渐变成判断。</p>
+        </div>
+        <aside class="hero-note"><strong>先搭框架，不急着自动化。</strong>先把每个模块的输入、输出、边界和人工决策点定义清楚。连续发布后，再决定哪里值得做成 Agent。</aside>
+      </header>
+
+      <div class="north-star"><span class="number">NORTH STAR</span><p>用真实的 AI 实验，讨论人在 AI 时代如何扩大行动半径、保留判断，并持续迭代自己。</p></div>
+
+      <section>
+        <div class="section-head"><h2>所有模块共享的<br />不是提示词，是判断。</h2><p>每个角色看到同一份“账号宪法”。这防止资讯、脚本和数据模块各自把账号推向不同方向。</p></div>
+        <div class="brain">
+          <h3>共享大脑 · Account Brain</h3>
+          <div class="brain-grid">
+            <div><b>账号宪法</b><span>我是谁、为谁写、明确不做什么、什么才算成功。</span></div>
+            <div><b>素材档案</b><span>真实项目、观察、失败、可公开边界；素材是证据，不是履历展。</span></div>
+            <div><b>内容档案</b><span>每条内容的假设、脚本、成片、数据、评论与复盘。</span></div>
+            <div><b>学习记录</b><span>什么吸引对的人，什么只带来噪音，下一条该保留或改变什么。</span></div>
+          </div>
+        </div>
+        <div class="loop">
+          <div><span>01 / FIND</span><b>发现信号</b></div>
+          <div><span>02 / DECIDE</span><b>讨论选题</b></div>
+          <div><span>03 / MAKE</span><b>讲成视频</b></div>
+          <div><span>04 / READ</span><b>读取反馈</b></div>
+          <div><span>05 / LEARN</span><b>更新判断</b></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>五个模块。<br />一次只启用一个。</h2><p>点击模块查看：它负责什么、参考什么做法、输出什么，以及你现在是否需要做它。</p></div>
+        <div class="module-nav" role="tablist" aria-label="内容陪跑教练模块">
+          <button role="tab" aria-selected="true" aria-controls="m1" data-target="m1">01 资讯雷达</button>
+          <button role="tab" aria-selected="false" aria-controls="m2" data-target="m2">02 选题陪练</button>
+          <button role="tab" aria-selected="false" aria-controls="m3" data-target="m3">03 脚本陪练</button>
+          <button role="tab" aria-selected="false" aria-controls="m4" data-target="m4">04 制作陪练</button>
+          <button role="tab" aria-selected="false" aria-controls="m5" data-target="m5">05 数据复盘</button>
+        </div>
+
+        <article class="module active" id="m1" role="tabpanel">
+          <div><div class="module-label">MODULE 01</div><h3>资讯雷达</h3><p>不是“抓热榜”，而是从外部变化和你的内部实验里，找值得停下来思考的信号。</p><p class="now">现在先做：是</p></div>
+          <div><b>输入</b><ul><li>AI 产品、模型、创作者观点的原链接</li><li>你在 Discord、Obsidian、项目里遇到的变化</li><li>评论、私信和同行聊天里的重复问题</li></ul><div class="output"><b>最小输出：信号卡</b>
+发生了什么 / 原链接
+它触到什么问题
+它与我有哪些真实素材相连
+可讨论的选题（最多 2 个）
+风险：噪音、饱和、公开边界</div></div>
+          <div><div class="practice"><b>参考做法</b><p>热点只是时机，不能取代受众匹配。先积累多次快照，再看变化而非单次热度。</p><p><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noreferrer">Anthropic：上下文需要持续筛选，而非无限堆积 ↗</a></p></div><div class="practice"><b>先不做</b><p>24 小时全网爬虫、自动跟热点、自动写内容。起步阶段每周两次人工校验更重要。</p></div></div>
+        </article>
+
+        <article class="module" id="m2" role="tabpanel">
+          <div><div class="module-label">MODULE 02</div><h3>选题陪练</h3><p>不替你决定“发什么”，而是像一个有记忆的主编，逼你说清楚为什么这个题非你不可。</p><p class="now">现在先做：是</p></div>
+          <div><b>输入</b><ul><li>一张信号卡，或一个你自己反复在想的困惑</li><li>账号宪法、素材档案、已发布内容及反馈</li></ul><div class="output"><b>最小输出：选题卡</b>
+谁会停下来 / 他的具体困境
+主流观点 / 我的不同判断
+真实证据与公开边界
+标题、开头、内容动作
+发布后只观察一个信号</div></div>
+          <div><div class="practice"><b>参考做法</b><p>系列要有一致的格式和可识别的承诺，但每期仍需有不同的具体事件或矛盾。</p><p><a href="https://blog.youtube/creator-and-artist-stories/four-tips-for-branding-your-series-on/" target="_blank" rel="noreferrer">YouTube：稳定格式让单条内容成为可辨识的系列 ↗</a></p></div><div class="practice"><b>你的规则</b><p>LonkyClaw 不是选题本身，是证据库。标题先讲人的困境和具体场景，再展示产品动作。</p></div></div>
+        </article>
+
+        <article class="module" id="m3" role="tabpanel">
+          <div><div class="module-label">MODULE 03</div><h3>脚本陪练</h3><p>先帮你把一个判断说透，再把它变成可拍的叙事。它不是“批量生成 60 秒口播”。</p><p class="now">现在先做：下一步</p></div>
+          <div><b>输入</b><ul><li>已经通过讨论的选题卡</li><li>一个真实场景、截图、记录或可演示的产品动作</li></ul><div class="output"><b>最小输出：叙事骨架</b>
+前 3 秒：一个反常识或具体困境
+中段：我原来怎么想，哪里被现实打断
+证据：只展示一个真实动作
+转折：我因此改了什么
+结尾：让观众回答的一个问题</div></div>
+          <div><div class="practice"><b>参考做法</b><p>标题和开头承诺的内容必须尽快兑现；如果视频后段才出现最有价值部分，应考虑前移。</p><p><a href="https://support.google.com/youtube/answer/9314415?hl=en" target="_blank" rel="noreferrer">YouTube：用留存高点和流失点反推开头与结构 ↗</a></p></div><div class="practice"><b>你的规则</b><p>拦截产品腔：不从“我实现了什么模块”开始，而从“我为何需要它”开始。</p></div></div>
+        </article>
+
+        <article class="module" id="m4" role="tabpanel">
+          <div><div class="module-label">MODULE 04</div><h3>制作陪练</h3><p>把脚本拆成真人、屏幕、证据和剪辑节奏。目标不是自动生成视频，而是不再每条都从零开始。</p><p class="now">现在先做：暂缓</p></div>
+          <div><b>输入</b><ul><li>叙事骨架和完整口播</li><li>能公开的截图、录屏、真实操作或现场材料</li></ul><div class="output"><b>最小输出：拍摄包</b>
+必须真人讲的 3 段
+只展示一个产品动作的录屏
+每段画面与文字提示
+封面 3 个候选
+剪辑时必须删掉的“自我感动段”</div></div>
+          <div><div class="practice"><b>参考做法</b><p>平台鼓励用原生、纵向、叙事驱动的表达；但不要把平台技巧误当成内容本身。</p><p><a href="https://newsroom.tiktok.com/5-tips-for-tiktok-creators?lang=en" target="_blank" rel="noreferrer">TikTok：创作者视频的基础格式与故事表达 ↗</a></p></div><div class="practice"><b>先不做</b><p>AI 自动剪辑工作流、复杂模板库、批量素材生成。先拍出 3 条，再标准化重复动作。</p></div></div>
+        </article>
+
+        <article class="module" id="m5" role="tabpanel">
+          <div><div class="module-label">MODULE 05</div><h3>数据复盘</h3><p>不把一条高播放误判成定位成功。它要区分：陌生人是否停下、是否看完、是否保存，以及对的人有没有出现。</p><p class="now">现在先做：发布后启动</p></div>
+          <div><b>输入</b><ul><li>平台数据：播放、完播、互动、收藏、涨粉</li><li>评论原文、私信、合作/讨论线索</li><li>你的主观复盘：哪里讲顺了、哪里不想再讲</li></ul><div class="output"><b>最小输出：一页复盘</b>
+留住人的是哪一段
+观众误解/追问了什么
+吸引到谁，而不只是吸引了多少人
+保留 / 删除 / 下次验证
+一条可写回选题 Agent 的学习</div></div>
+          <div><div class="practice"><b>参考做法</b><p>视频留存应在单条内容层面看：高点可能是值得前移或扩写的内容，流失点说明承诺或结构存在问题。</p><p><a href="https://support.google.com/youtube/answer/9314415?hl=en" target="_blank" rel="noreferrer">YouTube：关键留存时刻的解释与用法 ↗</a></p></div><div class="practice"><b>你的北极星</b><p>播放是入口；高质量私信、同行讨论、持续回访，才更接近“建立自己的资源”。</p></div></div>
+        </article>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>不是五个 Agent 同时开工。<br />是一个逐步变强的循环。</h2><p>先用人工工作流验证，再把稳定、重复、低风险的部分自动化。</p></div>
+        <div class="timeline">
+          <div class="phase current"><span class="mono">NOW / 0–2 周</span><h3>定方向</h3><p>写账号宪法；整理 LonkyClaw 素材与公开边界；每周做 3 张选题卡。</p></div>
+          <div class="phase"><span class="mono">NEXT / 3–6 周</span><h3>发布学习</h3><p>连续发布 3 条；每条只验证一个假设；先建立脚本与拍摄模板。</p></div>
+          <div class="phase"><span class="mono">LATER / 7–10 周</span><h3>找到重复</h3><p>从内容数据和同行互动里，确定哪些结构、话题和演示方式值得保留。</p></div>
+          <div class="phase"><span class="mono">THEN / 10+ 周</span><h3>再自动化</h3><p>只把反复出现、你已经信任的动作做成独立 Agent 或自动流程。</p></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>三条不变的约束。</h2><p>它们比“用哪个模型”更重要。</p></div>
+        <div class="rules">
+          <div><b>人拥有最终编辑权</b><p>Agent 可以收集、挑战、提案和复盘；但不能自动改变账号定位、公开素材或发布内容。</p></div>
+          <div><b>先证据，后观点</b><p>项目、数据和个人经历是证据；没有外部验证的自用工具，不能被写成已证明的产品需求。</p></div>
+          <div><b>一条内容是一次假设</b><p>不因为一条爆款就改定位，也不因为一条低播放就否定一个长期命题。</p></div>
+          <div><b>自动化只处理已验证的重复</b><p>当你还不知道什么有用时，自动化只会加速噪音；先手动走几轮，才知道该自动化哪里。</p></div>
+        </div>
+      </section>
+
+      <section class="start">
+        <div><div class="eyebrow">First Move</div><h2>现在只要做三件事。</h2><ol><li>把账号宪法写成一页：目标人群、承诺、素材、边界、成功定义。</li><li>为 LonkyClaw 建一张新素材卡：从“工程项目”改写为“长期人机协作实验”。</li><li>针对第一个视频，完成一张选题卡；暂不写完整脚本。</li></ol></div>
+        <aside class="callout"><b>系统开始的标志</b><span>不是 Agent 跑起来，而是你第一次明确写下：我为什么做这个题、我想吸引谁、发完后准备从什么反馈里学习。</span></aside>
+      </section>
+    </main>
+    <footer class="page"><span>CONTENT COACH / FRAMEWORK v0.1</span><span>原则与来源已在各模块内链接 · 2026.08</span></footer>
+    <script>
+      const tabs = document.querySelectorAll('[role="tab"]');
+      const panels = document.querySelectorAll('[role="tabpanel"]');
+      tabs.forEach((tab) => tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.setAttribute('aria-selected', 'false'));
+        panels.forEach((panel) => panel.classList.remove('active'));
+        tab.setAttribute('aria-selected', 'true');
+        document.getElementById(tab.dataset.target).classList.add('active');
+      }));
+    </script>
+  </body>
+</html>

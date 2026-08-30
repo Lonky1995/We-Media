@@ -1,0 +1,13 @@
+# Local operating data and generated run history
+data/
+*.jsonl
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+credentials/
+
+# Operating-system and editor files
+.DS_Store
+.obsidian/
