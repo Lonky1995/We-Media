@@ -162,6 +162,84 @@
       }
       .priority span { color: var(--red); }
 
+      .agent-shell {
+        display: grid;
+        grid-template-columns: .86fr 1.14fr;
+        gap: 1px;
+        background: var(--ink);
+        border: 1px solid var(--ink);
+      }
+      .agent-panel {
+        background: var(--paper);
+        padding: clamp(1rem, 2.4vw, 1.5rem);
+      }
+      .agent-panel label {
+        display: block;
+        margin-bottom: 1rem;
+        color: var(--muted);
+        font-size: .88rem;
+      }
+      .agent-panel span {
+        display: block;
+        margin-bottom: .35rem;
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .agent-panel input,
+      .agent-panel select,
+      .agent-panel textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: oklch(98% 0.008 82);
+        color: var(--ink);
+        padding: .7rem .75rem;
+        font: inherit;
+        border-radius: 0;
+      }
+      .agent-panel textarea {
+        min-height: 9rem;
+        resize: vertical;
+      }
+      .agent-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .7rem;
+        align-items: center;
+      }
+      .agent-actions button {
+        cursor: pointer;
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        padding: .72rem 1rem;
+      }
+      .agent-actions button.secondary {
+        background: transparent;
+        color: var(--ink);
+      }
+      .agent-status {
+        margin-top: 1rem;
+        color: var(--muted);
+        font-size: .9rem;
+      }
+      .agent-output {
+        min-height: 32rem;
+        max-height: 48rem;
+        overflow: auto;
+        white-space: pre-wrap;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 1rem;
+        font-size: .92rem;
+      }
+      .api-note {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: .86rem;
+      }
+
       .timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 2.1rem; }
       .timeline::before { content: ""; position: absolute; top: 1.3rem; left: 0; right: 0; height: 1px; background: var(--ink); }
       .phase { position: relative; padding: 2.25rem 1.2rem 0 0; }
@@ -197,7 +275,7 @@
         .module.active { display: block; }
         .module > div, .module > div + div { padding: 1.2rem 0; border-left: 0; border-bottom: 1px solid var(--line); }
         .rules { grid-template-columns: 1fr; }
-        .desk-grid, .commands { grid-template-columns: 1fr; }
+        .desk-grid, .commands, .agent-shell { grid-template-columns: 1fr; }
         .timeline::before { left: .35rem; top: 0; bottom: 0; width: 1px; height: auto; }
         .phase { padding: 0 0 1.2rem 2rem; }
         .phase::before { top: .2rem; left: 0; }
@@ -218,6 +296,62 @@
       </header>
 
       <div class="north-star"><span class="number">NORTH STAR</span><p>用真实 AI 项目和长期协作实验，吸引 AI 创业者、产品实践者和同行交流，而不是做泛 AI 工具流量号。</p></div>
+
+      <section>
+        <div class="section-head"><h2>直接和 Agent 讨论。</h2><p>这里是本地 DeepSeek 工作台。你粘贴素材、链接、竞品字幕或选题卡，它按当前框架先路由，再输出下一步。</p></div>
+        <div class="agent-shell">
+          <div class="agent-panel">
+            <label>
+              <span>DeepSeek API Key</span>
+              <input id="apiKey" type="password" autocomplete="off" placeholder="sk-..." />
+            </label>
+            <label>
+              <span>API Endpoint</span>
+              <input id="apiEndpoint" type="url" value="https://api.deepseek.com/chat/completions" />
+            </label>
+            <label>
+              <span>模型</span>
+              <select id="modelName">
+                <option value="deepseek-v4-flash">deepseek-v4-flash</option>
+                <option value="deepseek-v4-pro">deepseek-v4-pro</option>
+              </select>
+            </label>
+            <label>
+              <span>思考模式</span>
+              <select id="thinkingMode">
+                <option value="disabled">关闭：更快，适合整理材料</option>
+                <option value="enabled">开启：更适合选题推理</option>
+              </select>
+            </label>
+            <label>
+              <span>协作模式</span>
+              <select id="agentMode">
+                <option value="auto">自动路由</option>
+                <option value="capture">素材捕捉</option>
+                <option value="topic">选题研究</option>
+                <option value="competitor">竞品分析</option>
+                <option value="script">脚本 Brief</option>
+                <option value="weekly">周度工作台</option>
+              </select>
+            </label>
+            <label>
+              <span>已确认上下文</span>
+              <textarea id="agentContext" placeholder="可粘贴选题卡、账号契约、竞品样本、项目变化或本轮约束。"></textarea>
+            </label>
+            <label>
+              <span>这次要处理的内容</span>
+              <textarea id="agentInput" placeholder="例如：这个视频值得我学吗？链接：... 字幕：... 我的观察：..."></textarea>
+            </label>
+            <div class="agent-actions">
+              <button id="runAgent" type="button">发送给 Agent</button>
+              <button id="clearAgent" class="secondary" type="button">清空输出</button>
+            </div>
+            <div id="agentStatus" class="agent-status">API Key 只保存在当前页面内存；不要把带 Key 的页面部署到公开网站。</div>
+          </div>
+          <pre id="agentOutput" class="agent-output">等待输入。</pre>
+        </div>
+        <p class="api-note">纯 HTML 不能直接读取本地 Obsidian、GitHub 或项目文件；这些内容需要你粘贴进来，或以后再加本地后端代理。若浏览器拦截跨域请求，也需要本地代理转发 DeepSeek API。</p>
+      </section>
 
       <section>
         <div class="section-head"><h2>共享的不是提示词，<br />是证据和判断。</h2><p>每个模块都要回到来源、公开边界和账号定位。没有来源的内容只能是问题或假设，不能支撑结论。</p></div>
@@ -354,7 +488,7 @@
         <aside class="callout"><b>系统开始的标志</b><span>不是 HTML 更好看，而是你能随手投喂一个想法、链接或竞品，Agent 知道该进入哪个协作模式。</span></aside>
       </section>
     </main>
-    <footer class="page"><span>WE-MEDIA AGENT / OPERATING MANUAL v0.1</span><span>模块 4 暂缓 · 模块 5 已启用 · 2026.08</span></footer>
+    <footer class="page"><span>WE-MEDIA AGENT / WORKBENCH v0.1</span><span>模块 4 暂缓 · 模块 5 已启用 · 2026.08</span></footer>
     <script>
       const tabs = document.querySelectorAll('[role="tab"]');
       const panels = document.querySelectorAll('[role="tabpanel"]');
@@ -364,6 +498,134 @@
         tab.setAttribute('aria-selected', 'true');
         document.getElementById(tab.dataset.target).classList.add('active');
       }));
+
+      const modePrompts = {
+        auto: '先判断用户输入属于素材捕捉、外部信号、竞品分析、选题研究、脚本协作、发布记录还是复盘。不要急着写脚本。先说明路由、来源状态、公开边界和下一步。',
+        capture: '进入素材捕捉模式。输出素材卡或信号卡：来源、原始语境、可验证事实、个人判断、未知项、公开边界、下一步。',
+        topic: '进入选题研究模式。输出选题研究包：来源索引、整体热度/需求信号、现有角度地图、与我的连接、2-4 个弱建议、下一轮讨论问题。每个事实和判断都要引用 source_id。',
+        competitor: '进入竞品分析模式。输出竞品账号卡或竞品视频样本卡：它吸引谁、反复解决什么问题、标题/开头/结构/证据、评论问题、可借鉴、不要学、如何转译成我的方式。',
+        script: '进入脚本协作模式。先不要写完整逐字稿。先问最多 3 个关键问题；如果信息足够，输出脚本 Brief、3 个开头假设、口播大纲、拍摄/录屏清单、删减清单。',
+        weekly: '进入周度工作台模式。整理输入队列、项目变化卡、选题研究包、竞品与风格更新、本周唯一推进动作、暂缓原因。不要输出脚本，不做最终排名。',
+      };
+
+      const systemPrompt = `你是 Lonky 的自媒体 Agent，本质是长期协作的内容搭档，不是自动内容工厂。
+账号方向：用真实 AI 项目和长期协作实验，吸引 AI 创业者、产品实践者和同行交流，不做泛 AI 工具流量号。
+工作原则：
+1. 人拥有最终决定权：选题、观点、公开边界、发布和策略调整只能由创作者确认。
+2. 强信息、弱建议：先给来源、事实、角度地图和问题，不直接替用户选题。
+3. 每个事实、样本、判断、候选角度都必须有来源；没有来源标为“待补来源”，只能作为问题或假设。
+4. 平台样本默认由用户人工看完后投喂；你负责来源索引、角度聚类、拥挤判断和空位判断。
+5. 竞品分析必须同时输出“可借鉴”和“不要学”；学习结构，不复制人设、标题套路、焦虑叙事。
+6. 脚本模式先做 Brief 和大纲，不直接写完整逐字稿；保留第一人称、真实不确定性和产品判断过程。
+7. 不包装成未经验证的 AI 专家、顾问或导师；不把个人工具写成已被市场验证的产品。
+8. 不输出金融交易建议、收益承诺、雇主/客户/私有系统细节。
+9. 默认优先级：安全边界 > 来源追溯 > 选题清晰度 > 证据动作 > 表达风格 > 自动化效率。
+输出用中文，直接、具体、可执行。`;
+
+      const apiKeyInput = document.getElementById('apiKey');
+      const endpointInput = document.getElementById('apiEndpoint');
+      const modelInput = document.getElementById('modelName');
+      const thinkingInput = document.getElementById('thinkingMode');
+      const modeInput = document.getElementById('agentMode');
+      const contextInput = document.getElementById('agentContext');
+      const userInput = document.getElementById('agentInput');
+      const runButton = document.getElementById('runAgent');
+      const clearButton = document.getElementById('clearAgent');
+      const statusEl = document.getElementById('agentStatus');
+      const outputEl = document.getElementById('agentOutput');
+
+      let chatHistory = [];
+
+      function setStatus(text) {
+        statusEl.textContent = text;
+      }
+
+      function renderOutput(text) {
+        outputEl.textContent = text || '等待输入。';
+      }
+
+      clearButton.addEventListener('click', () => {
+        chatHistory = [];
+        renderOutput('');
+        setStatus('已清空本页对话输出。');
+      });
+
+      runButton.addEventListener('click', async () => {
+        const apiKey = apiKeyInput.value.trim();
+        const endpoint = endpointInput.value.trim();
+        const model = modelInput.value.trim();
+        const thinkingMode = thinkingInput.value;
+        const mode = modeInput.value;
+        const context = contextInput.value.trim();
+        const input = userInput.value.trim();
+
+        if (!apiKey) {
+          setStatus('缺少 DeepSeek API Key。');
+          apiKeyInput.focus();
+          return;
+        }
+        if (!input) {
+          setStatus('缺少要处理的内容。');
+          userInput.focus();
+          return;
+        }
+
+        const userMessage = `协作模式：${mode}
+模式要求：${modePrompts[mode]}
+
+已确认上下文：
+${context || '无'}
+
+这次要处理的内容：
+${input}`;
+
+        runButton.disabled = true;
+        setStatus('正在请求 DeepSeek...');
+        renderOutput('正在生成...');
+
+        try {
+          const messages = [
+            { role: 'system', content: systemPrompt },
+            ...chatHistory.slice(-6),
+            { role: 'user', content: userMessage },
+          ];
+
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+              model,
+              messages,
+              thinking: { type: thinkingMode },
+              temperature: 0.35,
+              stream: false,
+            }),
+          });
+
+          if (!response.ok) {
+            const detail = await response.text();
+            throw new Error(`HTTP ${response.status}: ${detail.slice(0, 500)}`);
+          }
+
+          const data = await response.json();
+          const answer = data?.choices?.[0]?.message?.content ?? '';
+          if (!answer) throw new Error('DeepSeek 返回为空。');
+
+          chatHistory.push({ role: 'user', content: userMessage });
+          chatHistory.push({ role: 'assistant', content: answer });
+          renderOutput(answer);
+          setStatus('完成。本页只保留当前会话内存，刷新后不会保存输出。');
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          renderOutput(`请求失败：${message}\n\n如果错误与 CORS 或网络权限有关，说明纯 HTML 不能直接从浏览器调用该接口，需要加一个本地代理服务。`);
+          setStatus('请求失败。');
+        } finally {
+          runButton.disabled = false;
+        }
+      });
     </script>
   </body>
 </html>

@@ -817,6 +817,53 @@ style-library.md     个人角度与风格库
 
 当前不要求一次性创建这些目录。只有当某类卡片开始真实产生，再创建对应目录，避免空文件夹变成维护负担。
 
+### 5.4.1 HTML 工作台 v0.1
+
+HTML 不是静态展示页，而是第一版可交互工作台。它可以直接调用 DeepSeek Chat Completions API，把你粘贴的素材、竞品、选题卡或脚本请求送入自媒体 Agent 提示词。
+
+第一版边界：
+
+```text
+能做：粘贴式对话、模式路由、来源/选题/竞品/脚本输出、短期会话上下文
+不能做：直接读取本地 Obsidian、扫描 GitHub 项目、自动保存卡片、自动发布
+风险：浏览器直连 API 可能遇到 CORS；API Key 不应出现在公开部署页面
+```
+
+因此 HTML 工作台只适合本地自用。若后续要部署或自动读取本地文件，应增加一个本地代理服务：由代理读取文件、保管 API Key、调用 DeepSeek，再把结果返回页面。
+
+当前 harness 结构：
+
+```text
+Browser UI
+  -> 收集 API Key / Endpoint / 模型 / 协作模式 / 已确认上下文 / 本次输入
+Prompt Router
+  -> 根据模式选择素材捕捉、选题研究、竞品分析、脚本 Brief 或周度工作台提示词
+System Contract
+  -> 注入账号方向、来源规则、公开边界、竞品规则、脚本规则和安全边界
+Message Assembler
+  -> system prompt + 最近 6 条本页会话历史 + 本次用户输入
+DeepSeek Chat Completions
+  -> POST /chat/completions，返回 assistant message
+Renderer
+  -> 在页面右侧输出结果，只保留本页内存，不自动写文件
+```
+
+这个 harness 的设计选择是：先让交互跑起来，再决定哪些部分值得工程化。它不解决资料读取、长期记忆、文件保存和定时任务；这些应该放到下一层本地代理里，而不是塞进纯 HTML。
+
+下一版若要从“本地工作台”升级成“真正的本地 Agent”，需要增加：
+
+```text
+server.js / local proxy
+  /api/chat        负责保管 DEEPSEEK_API_KEY 并调用模型
+  /api/read-vault  按白名单读取 Obsidian 材料
+  /api/read-git    读取项目变更摘要
+  /api/save-card   把选题卡、竞品卡、脚本 Brief 写回本地目录
+.env
+  DEEPSEEK_API_KEY=...
+```
+
+但这不是 v0.1 的目标。v0.1 的目标是验证：你是否愿意每天/每周把材料粘进去，并且这个 Agent 是否真的能帮你推进选题和脚本讨论。
+
 ### 5.5 Agent 路由规则
 
 Agent 收到任何材料后，先做路由判断：
